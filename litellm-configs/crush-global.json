@@ -1,0 +1,12 @@
+{
+  "$schema": "https://charm.land/crush.json",
+  "providers": {
+    "macstudio": {
+      "type": "openai-compat",
+      "base_url": "http://YOUR_GATEWAY_IP:4000/v1",
+      "api_key": "YOUR_API_KEY",
+      "name": "Mac Studio LLM Gateway"
+    }
+  },
+  "default_provider": "macstudio"
+}

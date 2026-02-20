@@ -37,3 +37,7 @@ next-env.d.ts
 
 # A.Z Add
 crush_everything_claude_code_pack_v4.2.zip
+
+# Claude Code local session files (contain local paths and IPs)
+.claude/settings.local.json
+.claude/

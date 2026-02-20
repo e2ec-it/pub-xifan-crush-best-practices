@@ -1,5 +1,7 @@
 # Crush + Everything Claude Code (ECC) 통합 패키지 v4.0
 
+**언어：** [English](README.md) | [简体中文](README_zh-CN.md) | [繁體中文](README_zh-HK.md) | [日本語](README_ja-JP.md)
+
 이 패키지는 **affaan-m/everything-claude-code**의 핵심 개념(agents/skills/rules/hooks/MCP 설정)을 **Crush 친화적** 설정으로 적용한 것입니다.
 
 Crush와 Claude Code는 확장 형식이 다르기 때문에, 이 패키지는 현재 Crush에서 직접 사용할 수 있는 부분에 초점을 맞추고 있습니다：
@@ -31,28 +33,32 @@ Crush 스킬 디렉토리(기본값 `~/.config/crush/skills`)에 설치：
 - `.snippets/AGENTS.md.snippet.md`
 - `.snippets/CONVENTIONS.md.snippet.md`
 
-## 원클릭 설치
+## 빠른 시작
 
-git 저장소 내 어디서나 실행 (저장소 루트 자동 감지)：
+### Make 사용 (권장)
 
 ```bash
-bash deploy/install.sh --ecc
+make install            # 핵심 ECC 스킬 및 규칙 설치
+make install-guard      # ECC + 도구 가드 (권장)
+make install-full       # ECC + 가드 + Superpowers + 공통 MCP
+make dry-run            # 미리보기만, 변경 없음
+make uninstall          # 안전한 제거 (자동 백업)
 ```
 
-### 도구 가드 추가 (권장)
+### 스크립트 직접 실행
+
+`deploy/` 디렉토리의 스크립트는 번호 접두사로 순서를 쉽게 파악할 수 있습니다：
+
 ```bash
-bash deploy/install.sh --ecc --tool-guard
+# 핵심 설치 (저장소 루트 자동 감지)
+bash deploy/client-run-001-install.sh --ecc
+bash deploy/client-run-001-install.sh --ecc --tool-guard
+bash deploy/client-run-001-install.sh --ecc --tool-guard --dry-run
+
+# 제거
+bash deploy/client-run-002-uninstall.sh
 ```
 
-### 드라이런 (변경 없이 미리보기)
-```bash
-bash deploy/install.sh --ecc --tool-guard --dry-run
-```
-
-## 제거 (안전)
-```bash
-bash deploy/uninstall.sh
-```
 제거 시 이 패키지가 추가한 특정 키/스킬만 삭제됩니다 (먼저 백업이 생성됩니다).
 
 ---
@@ -69,11 +75,14 @@ bash deploy/uninstall.sh
 
 설치 예시：
 ```bash
-bash deploy/install.sh --mcp-github
-bash deploy/install.sh --mcp-supabase
-bash deploy/install.sh --mcp-vercel
-bash deploy/install.sh --mcp-common
-bash deploy/tools/list_mcp.sh
+make mcp-common         # github + supabase + vercel + context7 + filesystem
+make mcp-github
+make list-mcp           # 사용 가능한 MCP 이름 목록 보기
+
+# 또는 직접 실행：
+bash deploy/client-run-001-install.sh --mcp-github
+bash deploy/client-run-001-install.sh --mcp-common
+bash deploy/client-run-004-list-mcp.sh
 ```
 
 비파괴적 동작：
@@ -99,12 +108,18 @@ bash deploy/tools/list_mcp.sh
 
 설치：
 ```bash
-bash deploy/install.sh --superpowers
+make install-superpowers
+
+# 또는 직접 실행：
+bash deploy/client-run-001-install.sh --superpowers
 ```
 
 통합 설치：
 ```bash
-bash deploy/install.sh --ecc --tool-guard --superpowers --mcp-common
+make install-full
+
+# 또는 직접 실행：
+bash deploy/client-run-001-install.sh --ecc --tool-guard --superpowers --mcp-common
 ```
 
 저작권 표시: `superpowers/ATTRIBUTION.md`를 참조하세요.

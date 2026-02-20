@@ -36,28 +36,32 @@ translate well to Crush’s workflow.
 - `.snippets/AGENTS.md.snippet.md`
 - `.snippets/CONVENTIONS.md.snippet.md`
 
-## One-click install
+## Quick Start
 
-Run from anywhere inside your git repo (auto-detects repo root):
+### Using Make (recommended)
 
 ```bash
-bash deploy/install.sh --ecc
+make install            # Core ECC skills + rules
+make install-guard      # ECC + tool-guard (recommended)
+make install-full       # ECC + tool-guard + Superpowers + common MCPs
+make dry-run            # Preview only, no changes
+make uninstall          # Safe uninstall (backs up first)
 ```
 
-### Add tool-guard (recommended)
+### Direct script invocation
+
+Scripts in `deploy/` use numbered prefixes for easy discovery:
+
 ```bash
-bash deploy/install.sh --ecc --tool-guard
+# Core install (auto-detects repo root)
+bash deploy/client-run-001-install.sh --ecc
+bash deploy/client-run-001-install.sh --ecc --tool-guard
+bash deploy/client-run-001-install.sh --ecc --tool-guard --dry-run
+
+# Uninstall
+bash deploy/client-run-002-uninstall.sh
 ```
 
-### Dry-run (preview only)
-```bash
-bash deploy/install.sh --ecc --tool-guard --dry-run
-```
-
-## Uninstall (safe)
-```bash
-bash deploy/uninstall.sh
-```
 Uninstall removes only the specific keys/skills this pack added (backs up first).
 
 ---
@@ -75,11 +79,14 @@ Crush’s `.crush.json` `mcp` section.
 
 Install examples:
 ```bash
-bash deploy/install.sh --mcp-github
-bash deploy/install.sh --mcp-supabase
-bash deploy/install.sh --mcp-vercel
-bash deploy/install.sh --mcp-common
-bash deploy/tools/list_mcp.sh
+make mcp-common         # github + supabase + vercel + context7 + filesystem
+make mcp-github
+make list-mcp           # show all available MCP names
+
+# or directly:
+bash deploy/client-run-001-install.sh --mcp-github
+bash deploy/client-run-001-install.sh --mcp-common
+bash deploy/client-run-004-list-mcp.sh
 ```
 
 Non-destructive behavior:
@@ -105,12 +112,18 @@ This pack now includes an **optional** port of key Superpowers skills (MIT) adap
 
 Install:
 ```bash
-bash deploy/install.sh --superpowers
+make install-superpowers
+
+# or directly:
+bash deploy/client-run-001-install.sh --superpowers
 ```
 
 Combined:
 ```bash
-bash deploy/install.sh --ecc --tool-guard --superpowers --mcp-common
+make install-full
+
+# or directly:
+bash deploy/client-run-001-install.sh --ecc --tool-guard --superpowers --mcp-common
 ```
 
 Attribution: see `superpowers/ATTRIBUTION.md`.

@@ -1,5 +1,7 @@
 # Crush + Everything Claude Code (ECC) 統合パック v4.0
 
+**言語：** [English](README.md) | [简体中文](README_zh-CN.md) | [繁體中文](README_zh-HK.md) | [한국어](README_ko-KR.md)
+
 このパックは、**affaan-m/everything-claude-code** のコアコンセプト（agents/skills/rules/hooks/MCP設定）を **Crush 対応**のセットアップに適用したものです。
 
 Crush と Claude Code では拡張フォーマットが異なるため、このパックは Crush が現在直接利用できる部分に焦点を当てています：
@@ -31,28 +33,32 @@ Crush スキルディレクトリ（デフォルト `~/.config/crush/skills`）�
 - `.snippets/AGENTS.md.snippet.md`
 - `.snippets/CONVENTIONS.md.snippet.md`
 
-## ワンクリックインストール
+## クイックスタート
 
-git リポジトリ内の任意の場所から実行（リポジトリルートを自動検出）：
+### Make を使う（推奨）
 
 ```bash
-bash deploy/install.sh --ecc
+make install            # コア ECC スキルとルールをインストール
+make install-guard      # ECC + ツールガード（推奨）
+make install-full       # ECC + ガード + Superpowers + 共通 MCP
+make dry-run            # プレビューのみ、変更なし
+make uninstall          # 安全なアンインストール（バックアップあり）
 ```
 
-### ツールガードを追加（推奨）
+### スクリプトを直接実行
+
+`deploy/` 配下のスクリプトは番号付きプレフィックスで並び順がわかりやすい：
+
 ```bash
-bash deploy/install.sh --ecc --tool-guard
+# コアインストール（リポジトリルートを自動検出）
+bash deploy/client-run-001-install.sh --ecc
+bash deploy/client-run-001-install.sh --ecc --tool-guard
+bash deploy/client-run-001-install.sh --ecc --tool-guard --dry-run
+
+# アンインストール
+bash deploy/client-run-002-uninstall.sh
 ```
 
-### ドライラン（変更なしでプレビュー）
-```bash
-bash deploy/install.sh --ecc --tool-guard --dry-run
-```
-
-## アンインストール（安全）
-```bash
-bash deploy/uninstall.sh
-```
 アンインストールは、このパックが追加した特定のキー/スキルのみを削除します（事前にバックアップが作成されます）。
 
 ---
@@ -69,11 +75,14 @@ bash deploy/uninstall.sh
 
 インストール例：
 ```bash
-bash deploy/install.sh --mcp-github
-bash deploy/install.sh --mcp-supabase
-bash deploy/install.sh --mcp-vercel
-bash deploy/install.sh --mcp-common
-bash deploy/tools/list_mcp.sh
+make mcp-common         # github + supabase + vercel + context7 + filesystem
+make mcp-github
+make list-mcp           # 利用可能な MCP 名を表示
+
+# または直接実行：
+bash deploy/client-run-001-install.sh --mcp-github
+bash deploy/client-run-001-install.sh --mcp-common
+bash deploy/client-run-004-list-mcp.sh
 ```
 
 非破壊的な動作：
@@ -99,12 +108,18 @@ bash deploy/tools/list_mcp.sh
 
 インストール：
 ```bash
-bash deploy/install.sh --superpowers
+make install-superpowers
+
+# または直接実行：
+bash deploy/client-run-001-install.sh --superpowers
 ```
 
 組み合わせインストール：
 ```bash
-bash deploy/install.sh --ecc --tool-guard --superpowers --mcp-common
+make install-full
+
+# または直接実行：
+bash deploy/client-run-001-install.sh --ecc --tool-guard --superpowers --mcp-common
 ```
 
 帰属表示：`superpowers/ATTRIBUTION.md` を参照してください。

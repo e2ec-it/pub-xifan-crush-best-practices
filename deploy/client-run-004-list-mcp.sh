@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 python3 - <<PY
 import json, pathlib
 p = pathlib.Path("$ROOT") / "mcp-configs" / "ecc-mcp-servers.crush.json"

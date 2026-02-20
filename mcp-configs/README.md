@@ -8,10 +8,10 @@ This pack stores **Crush-ready templates** in:
 
 ## Install into a repo
 ```bash
-bash deploy/install.sh --mcp-github
-bash deploy/install.sh --mcp-supabase
-bash deploy/install.sh --mcp-vercel
-bash deploy/install.sh --mcp-common
+bash deploy/client-run-001-install.sh --mcp-github
+bash deploy/client-run-001-install.sh --mcp-supabase
+bash deploy/client-run-001-install.sh --mcp-vercel
+bash deploy/client-run-001-install.sh --mcp-common
 ```
 
 ## Important

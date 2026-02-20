@@ -1,5 +1,7 @@
 # Crush + Everything Claude Code (ECC) 整合包 v4.0
 
+**語言版本：** [English](README.md) | [简体中文](README_zh-CN.md) | [日本語](README_ja-JP.md) | [한국어](README_ko-KR.md)
+
 本整合包將 **affaan-m/everything-claude-code** 的核心概念（agents/skills/rules/hooks/MCP 設定）適配為 **Crush 友好**的配置方式。
 
 由於 Crush 與 Claude Code 的擴展格式不同，本整合包專注於 Crush 目前可直接使用的部分：
@@ -31,28 +33,32 @@
 - `.snippets/AGENTS.md.snippet.md`
 - `.snippets/CONVENTIONS.md.snippet.md`
 
-## 一鍵安裝
+## 快速開始
 
-在你的 git 倉庫內任意位置執行（自動偵測倉庫根目錄）：
+### 使用 Make（建議）
 
 ```bash
-bash deploy/install.sh --ecc
+make install            # 安裝核心 ECC 技能和規則
+make install-guard      # ECC + 工具守衛（建議）
+make install-full       # ECC + 守衛 + Superpowers + 常用 MCP
+make dry-run            # 僅預覽，不修改文件
+make uninstall          # 安全解除安裝（自動備份）
 ```
 
-### 新增工具守衛（建議）
+### 直接呼叫腳本
+
+`deploy/` 目錄下的腳本使用帶編號前綴，便於按序查找：
+
 ```bash
-bash deploy/install.sh --ecc --tool-guard
+# 核心安裝（自動偵測倉庫根目錄）
+bash deploy/client-run-001-install.sh --ecc
+bash deploy/client-run-001-install.sh --ecc --tool-guard
+bash deploy/client-run-001-install.sh --ecc --tool-guard --dry-run
+
+# 解除安裝
+bash deploy/client-run-002-uninstall.sh
 ```
 
-### 預覽執行（僅預覽，不實際修改）
-```bash
-bash deploy/install.sh --ecc --tool-guard --dry-run
-```
-
-## 解除安裝（安全）
-```bash
-bash deploy/uninstall.sh
-```
 解除安裝僅移除本整合包新增的特定鍵/技能（操作前會自動備份）。
 
 ---
@@ -69,11 +75,14 @@ bash deploy/uninstall.sh
 
 安裝範例：
 ```bash
-bash deploy/install.sh --mcp-github
-bash deploy/install.sh --mcp-supabase
-bash deploy/install.sh --mcp-vercel
-bash deploy/install.sh --mcp-common
-bash deploy/tools/list_mcp.sh
+make mcp-common         # github + supabase + vercel + context7 + filesystem
+make mcp-github
+make list-mcp           # 查看所有可用 MCP 名稱
+
+# 或直接呼叫：
+bash deploy/client-run-001-install.sh --mcp-github
+bash deploy/client-run-001-install.sh --mcp-common
+bash deploy/client-run-004-list-mcp.sh
 ```
 
 非破壞性行為：
@@ -99,12 +108,18 @@ bash deploy/tools/list_mcp.sh
 
 安裝：
 ```bash
-bash deploy/install.sh --superpowers
+make install-superpowers
+
+# 或直接呼叫：
+bash deploy/client-run-001-install.sh --superpowers
 ```
 
 組合安裝：
 ```bash
-bash deploy/install.sh --ecc --tool-guard --superpowers --mcp-common
+make install-full
+
+# 或直接呼叫：
+bash deploy/client-run-001-install.sh --ecc --tool-guard --superpowers --mcp-common
 ```
 
 版權歸屬：請參閱 `superpowers/ATTRIBUTION.md`。

@@ -15,37 +15,50 @@ Upstream sources: [affaan-m/everything-claude-code](https://github.com/affaan-m/
 
 ## Common Commands
 
-### Install
+### Using Make (recommended)
 
 ```bash
-# Core ECC skills + rules (recommended starting point)
-bash deploy/install.sh --ecc
+make install            # 安装核心 ECC 技能和规则
+make install-guard      # 安装 ECC + 工具守卫（推荐）
+make install-full       # 完整安装（ECC + 守卫 + Superpowers + MCP）
+make dry-run            # 预览安装内容（不修改文件）
+make uninstall          # 安全卸载
 
-# Add tool-guard (prevents hallucinated tool names in Crush)
-bash deploy/install.sh --ecc --tool-guard
+make list-mcp           # 列出所有可用 MCP 服务器
+make mcp-common         # 安装常用 MCP（github/supabase/vercel/context7/filesystem）
+make mcp-github         # 安装 GitHub MCP
 
-# Full install: ECC + tool-guard + Superpowers + common MCP servers
-bash deploy/install.sh --ecc --tool-guard --superpowers --mcp-common
-
-# Preview without making changes
-bash deploy/install.sh --ecc --tool-guard --dry-run
-
-# Install a specific MCP server
-bash deploy/install.sh --mcp-github
-bash deploy/install.sh --mcp-supabase
-
-# List all available MCP servers
-bash deploy/tools/list_mcp.sh
+make setup-litellm      # 配置连接本地 LiteLLM 网关（交互式）
+make setup-litellm-dry  # 预览 LiteLLM 网关配置
+make unset-litellm      # 移除 LiteLLM 网关配置
 ```
 
-### Uninstall
+### Direct Script Invocation
+
+User-facing scripts are in `deploy/` with numbered prefixes:
 
 ```bash
-# Safe uninstall (creates backup first)
-bash deploy/uninstall.sh
+# 001 Install
+bash deploy/client-run-001-install.sh --ecc
+bash deploy/client-run-001-install.sh --ecc --tool-guard
+bash deploy/client-run-001-install.sh --ecc --tool-guard --superpowers --mcp-common
+bash deploy/client-run-001-install.sh --ecc --tool-guard --dry-run
+bash deploy/client-run-001-install.sh --mcp-github
+bash deploy/client-run-001-install.sh --mcp-supabase
 
-# Uninstall specific MCPs
-bash deploy/uninstall.sh --mcp-common
+# 002 Uninstall
+bash deploy/client-run-002-uninstall.sh
+bash deploy/client-run-002-uninstall.sh --mcp-common
+
+# 003 LiteLLM Gateway
+bash deploy/client-run-003-setup-litellm.sh
+bash deploy/client-run-003-setup-litellm.sh --ip 192.168.x.x
+bash deploy/client-run-003-setup-litellm.sh --tailscale
+bash deploy/client-run-003-setup-litellm.sh --dry-run
+bash deploy/client-run-003-setup-litellm.sh --unset
+
+# 004 List MCP servers
+bash deploy/client-run-004-list-mcp.sh
 ```
 
 ---
@@ -54,7 +67,16 @@ bash deploy/uninstall.sh --mcp-common
 
 ### Install/Uninstall System (`deploy/`)
 
-The installer is a Bash wrapper (`install.sh`) that delegates to two Python helpers:
+User-facing scripts use the `client-run-NNN-` prefix for ordered discoverability:
+
+| Script | Purpose |
+|--------|---------|
+| `deploy/client-run-001-install.sh` | Main installer (Bash wrapper → Python helpers) |
+| `deploy/client-run-002-uninstall.sh` | Safe removal script |
+| `deploy/client-run-003-setup-litellm.sh` | Configure local LiteLLM gateway |
+| `deploy/client-run-004-list-mcp.sh` | List available MCP server names |
+
+Internal helpers (not run directly):
 
 - **`deploy/lib/crush_merge.py`** — Manages `.crush.json` system prompt blocks using sentinel strings. `append_system()` is idempotent: it skips appending if the sentinel already exists. Key sentinels:
   - `"There is NO tool named \`read\`."` — tool-guard marker
@@ -62,7 +84,7 @@ The installer is a Bash wrapper (`install.sh`) that delegates to two Python help
 
 - **`deploy/lib/crush_mcp_edit.py`** — Manages MCP entries in `.crush.json`. `add_mcp_if_absent()` never overwrites existing entries; `remove_mcp()` cleans them up on uninstall.
 
-**install.sh flow:**
+**client-run-001-install.sh flow:**
 1. Parse flags → set environment variables passed to Python
 2. Walk up to 200 dirs to find `.git` (repo root detection)
 3. Create timestamped backup under `.backup_crush_ecc_v4/<timestamp>/`
@@ -72,7 +94,7 @@ The installer is a Bash wrapper (`install.sh`) that delegates to two Python help
 7. Write `.crush.json` only if content changed
 8. Copy skill directories to `~/.config/crush/skills/` (or `$CRUSH_SKILLS_DIR`)
 
-**uninstall.sh flow:** backup → remove MCPs via Python → rename skill dirs with `.removed_by_crush_ecc_v4.<timestamp>` suffix (never deletes).
+**client-run-002-uninstall.sh flow:** backup → remove MCPs via Python → rename skill dirs with `.removed_by_crush_ecc_v4.<timestamp>` suffix (never deletes).
 
 ### Skills (`crush/skills/`)
 
@@ -93,6 +115,10 @@ Plain text files appended verbatim into the `system` field of `.crush.json`:
 ### MCP Configs (`mcp-configs/`)
 
 `ecc-mcp-servers.crush.json` contains 14 pre-configured MCP server definitions. `--mcp-common` installs: `github`, `supabase`, `vercel`, `context7`, `filesystem`. Secrets use placeholder values (e.g. `YOUR_GITHUB_PAT_HERE`); see `mcp-configs/ENV.template` for what needs to be set.
+
+### LiteLLM Gateway (`litellm-configs/`)
+
+`client-run-003-setup-litellm.sh` configures Crush to connect to a local LiteLLM gateway (OpenAI-compatible `/v1` endpoint). Writes to `~/.config/crush/crush.json` and `~/.zshrc`. See `litellm-configs/README.md` for details.
 
 ---
 
