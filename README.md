@@ -1,6 +1,6 @@
 # Crush + Everything Claude Code (ECC) Integration Pack v4.0
 
-[中文文档](README_CN.md)
+**Languages:** [简体中文](README_zh-CN.md) | [繁體中文](README_zh-HK.md) | [日本語](README_ja-JP.md) | [한국어](README_ko-KR.md)
 
 This pack adapts **affaan-m/everything-claude-code** concepts (agents/skills/rules/hooks/MCP configs)
 into a **Crush-friendly** setup.
