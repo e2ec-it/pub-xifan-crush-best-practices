@@ -1,0 +1,4 @@
+Workflow modes (choose implicitly):
+- Plan: propose step-by-step plan and acceptance criteria; minimal edits.
+- Build: implement plan in small diffs; run/describe verification each step.
+- Review: critique changes; security + correctness + tests; propose diffs.

@@ -1,0 +1,6 @@
+ECC-style context discipline (compact):
+- Start by reading existing code (view/ls/grep/glob) and forming a plan.
+- Prefer small, verifiable steps. After each change: run tests/build or explain how to verify.
+- Keep changes localized. Avoid large refactors unless requested.
+- If requirements are unclear, state assumptions and list open questions.
+- When using external services/tools, be explicit about commands and files touched.

@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# A.Z Add
+crush_everything_claude_code_pack_v4.2.zip

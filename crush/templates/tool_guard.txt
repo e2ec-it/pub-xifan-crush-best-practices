@@ -1,0 +1,16 @@
+You are running inside Crush CLI.
+
+Valid tools:
+- view (read file)
+- ls
+- grep
+- glob
+- edit
+- write
+- bash
+
+Rules:
+- There is NO tool named `read`.
+- Never invent tool names.
+- To read files ALWAYS use `view`.
+- If unsure about tool name, ask the user instead of guessing.

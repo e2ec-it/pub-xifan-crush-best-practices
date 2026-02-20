@@ -1,0 +1,11 @@
+# Superpowers workflow (Crush)
+
+When doing software work, prefer this flow:
+1) sp-brainstorming (design + approval)
+2) sp-git-worktrees (isolated workspace)
+3) sp-writing-plans (bite-sized plan)
+4) sp-subagent-dev OR sp-executing-plans (execute plan)
+5) sp-request-code-review (between tasks / before merge)
+6) sp-finish-branch (merge/PR/cleanup)
+
+Always follow sp-tdd while implementing unless explicitly waived.
